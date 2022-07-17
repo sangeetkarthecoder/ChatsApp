@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#f9f9f9"
+    tools:context=".Activities.PhoneNumberActivity">
+
+
+    <ImageView
+        android:id="@+id/phoneimg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/mobile_auth" />
+
+    <TextView
+        android:id="@+id/verifytw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/phoneimg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-40dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Verify your phone number"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/chatsapptw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/verifytw"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="-30dp"
+        android:text="ChatsApp will send an SMS message to verify your phone number"
+        android:textSize="12sp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/chatsapptw"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="-140dp"
+        app:cardCornerRadius="15dp">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:ems="10"
+                android:inputType="phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:id="@+id/phoneNum"
+                android:padding="10dp"
+                android:background="@drawable/textviewdrawable"
+                android:hint="Enter your phone number"/>
+
+            <Button
+                android:id="@+id/continuebtn"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="CONTINUE"
+                android:backgroundTint="#4CAF50"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
