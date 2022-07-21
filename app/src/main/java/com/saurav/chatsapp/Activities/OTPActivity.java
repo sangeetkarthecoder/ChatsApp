@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
@@ -19,7 +20,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.mukesh.OnOtpCompletionListener;
 import com.saurav.chatsapp.databinding.ActivityOtpactivityBinding;
 
 import java.util.Objects;
@@ -47,7 +47,7 @@ public class OTPActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
-        binding.verifytw.setText("Verify " + "+91" + phoneNumber);
+        binding.verifytw.setText("Verify " + phoneNumber);
 
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -75,18 +75,12 @@ public class OTPActivity extends AppCompatActivity {
                 .build();
 
         PhoneAuthProvider.verifyPhoneNumber(options);
-        binding.otpv.requestFocus();
 
-        binding.otpv.setOnClickListener(new View.OnClickListener() {
+        binding.contbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE)).toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-            }
-        });
+                String otp = binding.otpv.getText().toString();
 
-        binding.otpv.setOtpCompletionListener(new OnOtpCompletionListener() {
-            @Override
-            public void onOtpCompleted(String otp) {
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationID, otp);
 
                 auth.signInWithCredential(credential).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -102,12 +96,7 @@ public class OTPActivity extends AppCompatActivity {
                         }
                     }
                 });
-            }
-        });
 
-        binding.contbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
                 Intent intent = new Intent(OTPActivity.this, setupProfileActivity.class);
                 startActivity(intent);
             }

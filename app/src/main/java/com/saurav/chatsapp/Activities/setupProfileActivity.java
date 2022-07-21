@@ -21,6 +21,8 @@ import com.google.firebase.storage.UploadTask;
 import com.saurav.chatsapp.ModuleClass.User;
 import com.saurav.chatsapp.databinding.ActivitySetupProfileBinding;
 
+import java.util.Objects;
+
 public class setupProfileActivity extends AppCompatActivity {
 
     ActivitySetupProfileBinding binding;
@@ -77,7 +79,7 @@ public class setupProfileActivity extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         String imgurl = uri.toString();
                                         String uid = auth.getUid();
-                                        String phonenumber = auth.getCurrentUser().getPhoneNumber();
+                                        String phonenumber = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
                                         String name = binding.name.getText().toString();
 
                                         User user = new User(uid, name, phonenumber, imgurl);
@@ -94,26 +96,26 @@ public class setupProfileActivity extends AppCompatActivity {
                                     }
                                 });
                             }
-                            else{
-                                String uid = auth.getUid();
-                                String phonenumber = auth.getCurrentUser().getPhoneNumber();
-                                String name = binding.name.getText().toString();
-
-                                User user = new User(uid, name, phonenumber, "NoImage");
-
-                                database.getReference().child("Users").child(uid).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
-                                        dialog.dismiss();
-                                        Intent intent = new Intent(setupProfileActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        finish();
-                                    }
-                                });
-                            }
                         }
                     });
                 }
+                else{
+                    String uid = auth.getUid();
+                    String phonenumber = auth.getCurrentUser().getPhoneNumber();
+
+                    User user = new User(uid, name, phonenumber, "NoImage");
+
+                    database.getReference().child("Users").child(uid).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            dialog.dismiss();
+                            Intent intent = new Intent(setupProfileActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                }
+
             }
         });
 

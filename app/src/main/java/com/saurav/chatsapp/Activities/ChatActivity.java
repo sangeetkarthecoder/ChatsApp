@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
@@ -37,7 +38,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         messages = new ArrayList<>();
-        adapter = new MessagesAdapter(this, messages);
+        adapter = new MessagesAdapter(this, messages, SenderRoom, ReceiverRoom);
 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -59,6 +60,8 @@ public class ChatActivity extends AppCompatActivity {
                                                 messages.clear();
                                                 for(DataSnapshot snapshot1: snapshot.getChildren()) {
                                                     Message message = snapshot1.getValue(Message.class);
+                                                    assert message != null;
+                                                    message.setMsg_id(snapshot1.getKey());
                                                     messages.add(message);
                                                 }
                                                 adapter.notifyDataSetChanged();
@@ -73,36 +76,46 @@ public class ChatActivity extends AppCompatActivity {
         binding.sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String msgTxt = binding.messagebox.getText().toString();
 
-                Date date = new Date();
+                if(msgTxt!="") {
 
-                Message message = new Message(msgTxt,uid, date.getTime());
-                binding.messagebox.setText("");
+                    Date date = new Date();
 
-                database.getReference().child("chats")
-                        .child(SenderRoom)
-                        .child("messages")
-                        .push()
-                        .setValue(message)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
+                    Message message = new Message(msgTxt, uid, date.getTime());
+                    binding.messagebox.setText("");
 
-                        database.getReference().child("chats")
-                                .child(ReceiverRoom)
-                                .child("messages")
-                                .push()
-                                .setValue(message)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void unused) {
+                    String randomKey = database.getReference().push().getKey();
 
-                            }
-                        });
+                    assert randomKey != null;
+                    database.getReference().child("chats")
+                            .child(SenderRoom)
+                            .child("messages")
+                            .child(randomKey)
+                            .setValue(message)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
 
-                    }
-                });
+                                    database.getReference().child("chats")
+                                            .child(ReceiverRoom)
+                                            .child("messages")
+                                            .child(randomKey)
+                                            .setValue(message)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+
+                                                }
+                                            });
+
+                                }
+                            });
+                } else{
+                    binding.messagebox.setError("Please type a message");
+                    return;
+                }
             }
         });
 

@@ -4,7 +4,7 @@ public class Message {
 
     private String msg_id, msg, sender_id;
     private long timestamp;
-    private int feeling;
+    private long feeling = -1;
 
     public Message() {
 
@@ -48,7 +48,7 @@ public class Message {
         this.timestamp = timestamp;
     }
 
-    public int getFeeling() {
+    public long getFeeling() {
         return feeling;
     }
 

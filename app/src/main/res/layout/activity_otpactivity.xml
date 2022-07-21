@@ -56,18 +56,26 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <com.mukesh.OtpView
+            <com.chaos.view.PinView
+                android:id="@+id/otpv"
+                style="@style/PinWidget.PinView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:cursorVisible="true"
                 android:inputType="number"
-                android:id="@+id/otpv"
-                android:itemBackground="@color/grey"
-                android:textColor="@color/white"
-                app:OtpItemCount="6"
-                app:OtpLineColor="@color/green"
-                app:OtpViewType="line"
-                />
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                app:cursorWidth="2dp"
+                app:hideLineWhenFilled="true"
+                app:itemCount="6"
+                app:itemHeight="48dp"
+                app:itemRadius="4dp"
+                app:itemSpacing="0dp"
+                app:itemWidth="48dp"
+                app:lineWidth="2dp"
+                app:viewType="rectangle" />
+
 
             <Button
                 android:id="@+id/contbtn"
@@ -76,6 +84,7 @@
                 android:layout_marginTop="10dp"
                 android:backgroundTint="#4CAF50"
                 android:text="CONTINUE" />
+
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.cardview.widget.CardView>
 

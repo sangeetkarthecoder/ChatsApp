@@ -32,7 +32,6 @@ public class PhoneNumberActivity extends AppCompatActivity {
             finish();
         }
 
-
         binding.continuebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
